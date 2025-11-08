@@ -38,7 +38,8 @@ function App() {
     setMessages((prev) => [...prev, userMsg]);
 
     try {
-      const res = await axios.post("https://loan-bot-floify.onrender.com/chat", {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
+      await axios.post(`${backendUrl}/chat`, {
         message: input,
         userId,
       });
