@@ -13,7 +13,7 @@ router.post("/sync", async (req, res) => {
 
     // In production, you'd use your HubSpot API key from process.env.HUBSPOT_API_KEY
     // Example structure (commented out until real integration)
-    /*
+    
     const response = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
       method: "POST",
       headers: {
@@ -30,7 +30,7 @@ router.post("/sync", async (req, res) => {
     });
     const data = await response.json();
     res.json({ success: true, hubspotResponse: data });
-    */
+    
 
     res.json({ success: true, message: "HubSpot sync placeholder working" });
   } catch (err) {

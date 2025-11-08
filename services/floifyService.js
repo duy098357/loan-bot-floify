@@ -1,36 +1,4 @@
-// import axios from "axios";
-// import dotenv from "dotenv";
 
-// dotenv.config();
-
-// const FLOIFY_API_BASE = "https://api.floify.com/api/v1"; // Base API URL
-// const FLOIFY_API_KEY = process.env.FLOIFY_API_KEY;
-
-// // ✅ Create a new loan application in Floify
-// export const createFloifyLoanApp = async ({ name, email, loanType, amount }) => {
-//   try {
-//     const response = await axios.post(
-//       `${FLOIFY_API_BASE}/loans`,
-//       {
-//         borrower_name: name,
-//         borrower_email: email,
-//         loan_type: loanType || "Mortgage",
-//         amount: amount || 250000,
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${FLOIFY_API_KEY}`,
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-
-//     return response.data; // expected { id, borrower_name, status, ... }
-//   } catch (error) {
-//     console.error("❌ Error creating Floify loan:", error.response?.data || error.message);
-//     return null;
-//   }
-// };
 
 
 
