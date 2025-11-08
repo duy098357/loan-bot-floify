@@ -38,7 +38,7 @@ function App() {
     setMessages((prev) => [...prev, userMsg]);
 
     try {
-      const res = await axios.post("http://localhost:5000/chat", {
+      const res = await axios.post("https://loan-bot-floify.onrender.com/chat", {
         message: input,
         userId,
       });
