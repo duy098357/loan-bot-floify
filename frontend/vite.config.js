@@ -9,7 +9,7 @@
 export default {
   build: {
     lib: {
-      entry: './src/widget.js', // your entry point for embed script
+      entry: 'src/widget.js', // your entry point for embed script
       name: 'LoanChatWidget',
       fileName: 'widget',
       formats: ['iife']
