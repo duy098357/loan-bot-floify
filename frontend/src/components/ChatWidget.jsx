@@ -1,107 +1,127 @@
-// import React, { useState } from "react";
-// import axios from "axios";
-
-// export default function ChatWidget() {
-//   const [messages, setMessages] = useState([]);
-//   const [input, setInput] = useState("");
-
-//   async function handleSend() {
-//     const userMsg = { sender: "user", text: input };
-//     setMessages((prev) => [...prev, userMsg]);
-//     setInput("");
-
-//     if (input.toLowerCase().includes("loan")) {
-//       const res = await axios.post("http://localhost:5000/api/chat", {
-//         name: "Visitor",
-//         email: "visitor@example.com",
-//         loanType: "Home Loan",
-//         amount: 350000,
-//       });
-
-//       setMessages((prev) => [
-//         ...prev,
-//         { sender: "bot", text: `✅ Application started! Complete it here: ${res.data.floifyLink}` },
-//       ]);
-//     } else {
-//       setMessages((prev) => [
-//         ...prev,
-//         { sender: "bot", text: "I can help you start a loan application. Type 'loan' to begin!" },
-//       ]);
-//     }
-//   }
-
-//   return (
-//     <div className="w-80 h-96 border rounded-xl shadow-lg p-3 bg-white flex flex-col">
-//       <div className="flex-1 overflow-y-auto mb-3">
-//         {messages.map((msg, i) => (
-//           <div key={i} className={msg.sender === "user" ? "text-right" : "text-left"}>
-//             <div
-//               className={`p-2 m-1 rounded-lg \${msg.sender === "user" ? "bg-blue-200" : "bg-gray-100"}`}
-//             >
-//               {msg.text}
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//       <div className="flex">
-//         <input className="flex-1 border rounded-l px-2" value={input} onChange={(e) => setInput(e.target.value)} />
-//         <button className="bg-blue-500 text-white px-3 rounded-r" onClick={handleSend}>Send</button>
-//       </div>
-//     </div>
-//   );
-// }
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { MessageCircle, X } from "lucide-react";
 
-const API_URL = "https://www.lender.com/chat"; // ✅ Use your deployed backend URL
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://www.lender.com/chat"; // Change if needed
 
 export default function ChatWidget() {
-  const [messages, setMessages] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      sender: "bot",
+      text: "👋 Hi there! I’m your Loan Assistant. How can I help you today?",
+    },
+  ]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  // Auto-scroll to latest message
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   async function handleSend() {
-    const userMsg = { sender: "user", text: input };
-    setMessages((prev) => [...prev, userMsg]);
+    if (!input.trim()) return;
+    const userText = input.trim();
+    setMessages((prev) => [...prev, { sender: "user", text: userText }]);
     setInput("");
+    setIsLoading(true);
 
     try {
-      const res = await axios.post(API_URL, { message: input });
-      setMessages((prev) => [...prev, { sender: "bot", text: res.data.reply }]);
-    } catch (err) {
-      console.error("❌ Chat error:", err);
+      const res = await axios.post(API_URL, { message: userText });
       setMessages((prev) => [
         ...prev,
-        { sender: "bot", text: "⚠ Unable to reach server. Please try again later." },
+        { sender: "bot", text: res.data.reply || "No response from server." },
       ]);
+    } catch (err) {
+      console.error("Chat error:", err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "bot",
+          text: "⚠️ Sorry, I’m having trouble connecting to the server.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
     }
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleSend();
+  };
+
   return (
-    <div className="w-80 h-96 border rounded-xl shadow-lg p-3 bg-white flex flex-col">
-      <div className="flex-1 overflow-y-auto mb-3">
-        {messages.map((msg, i) => (
-          <div key={i} className={msg.sender === "user" ? "text-right" : "text-left"}>
-            <div
-              className={`p-2 m-1 rounded-lg ${
-                msg.sender === "user" ? "bg-blue-200" : "bg-gray-100"
-              }`}
-            >
-              {msg.text}
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="flex">
-        <input
-          className="flex-1 border rounded-l px-2"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message..."
-        />
-        <button className="bg-blue-500 text-white px-3 rounded-r" onClick={handleSend}>
-          Send
+    <>
+      {/* Floating Button (bottom-left) */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed bottom-6 left-6 bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110 z-50"
+        >
+          <MessageCircle size={28} />
         </button>
-      </div>
-    </div>
+      )}
+
+      {/* Chat Window (bottom-left) */}
+      {isOpen && (
+        <div className="fixed bottom-20 left-6 w-80 bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden border border-gray-200 z-50">
+          {/* Header */}
+          <div className="bg-red-600 text-white px-4 py-3 flex items-center justify-between">
+            <div className="font-semibold text-sm">
+              StratoBridge Lending LLC
+            </div>
+            <button onClick={() => setIsOpen(false)} className="text-white">
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 p-3 overflow-y-auto space-y-2">
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`flex ${
+                  msg.sender === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                <div
+                  className={`px-3 py-2 rounded-2xl text-sm ${
+                    msg.sender === "user"
+                      ? "bg-red-600 text-white rounded-br-none"
+                      : "bg-gray-100 text-gray-800 rounded-bl-none"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="text-gray-400 text-xs italic">Typing...</div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input */}
+          <div className="p-3 border-t flex">
+            <input
+              className="flex-1 border rounded-l-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-red-600"
+              placeholder="Type your message..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <button
+              onClick={handleSend}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 rounded-r-lg transition"
+            >
+              ➤
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
