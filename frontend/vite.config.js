@@ -6,16 +6,17 @@
 //   build: { outDir: "dist" }
 // });
 
-export default {
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
   build: {
     lib: {
-      entry: 'src/widget.js', // your entry point for embed script
-      name: 'LoanChatWidget',
-      fileName: 'widget',
-      formats: ['iife']
-    },
-    rollupOptions: {
-      external: [], // no external dependencies
+      entry: "src/widget.js", // ✅ path we just created
+      name: "LoanChatWidget",
+      fileName: "widget",
+      formats: ["iife"], // browser-friendly script
     },
   },
-};
+});
