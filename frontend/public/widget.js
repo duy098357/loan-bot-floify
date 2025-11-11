@@ -1,6 +1,6 @@
 (function () {
   // --- Configuration ---
-  const CHATBOT_URL = "https://loan-bot-floify.vercel.app"; // your chatbot app URL
+  const CHATBOT_URL = "https://vercel.com/duy098357s-projects/loan-bot-floify"; // your chatbot app URL
   const BUTTON_COLOR = "#c91d23"; // red brand color
   const WIDTH = "380px";
   const HEIGHT = "520px";
