@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 const API_URL =
-  import.meta.env.VITE_API_URL || "https://api.render.com/deploy/srv-d471s0i4d50c7396uen0?key=vjnHJCeowOo";
+  import.meta.env.VITE_API_URL || "https://loan-bot-floify.onrender.com";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
