@@ -13,7 +13,7 @@ const app = express();
 // ✅ Allow specific origins
 const allowedOrigins = [
   "https://loan-bot-floify.onrender.com",
-  "https://lender.vercel.app",
+  "https://https://loan-bot-floify.vercel.app",
   "https://www.stratolending.com", // replace with your actual Wix domain
 ];
 
