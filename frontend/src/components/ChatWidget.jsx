@@ -56,35 +56,35 @@ export default function ChatWidget() {
     setMessages((prev) => [...prev, { sender: "assistant", text: data.reply }]);
   }
 
-  // async function handleSend() {
-  //   if (!input.trim()) return;
-  //   const userText = input.trim();
-  //   setMessages((prev) => [...prev, { sender: "user", text: userText }]);
-  //   setInput("");
-  //   setIsLoading(true);
+  async function handleSend() {
+    if (!input.trim()) return;
+    const userText = input.trim();
+    setMessages((prev) => [...prev, { sender: "user", text: userText }]);
+    setInput("");
+    setIsLoading(true);
 
-  //   try {
-  //     const res = await axios.post(API_URL, { message: userText });
-  //     setMessages((prev) => [
-  //       ...prev,
-  //       { sender: "bot", text: res.data.reply || "..." },
-  //     ]);
-  //   } catch (err) {
-  //     console.error("Chat error:", err);
-  //     setMessages((prev) => [
-  //       ...prev,
-  //       {
-  //         sender: "bot",
-  //         text: "⚠️ Sorry, I’m having trouble connecting to the server.",
-  //       },
-  //     ]);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }
+    try {
+      const res = await axios.post(API_URL, { message: userText });
+      setMessages((prev) => [
+        ...prev,
+        { sender: "bot", text: res.data.reply || "..." },
+      ]);
+    } catch (err) {
+      console.error("Chat error:", err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "bot",
+          text: "⚠️ Sorry, I’m having trouble connecting to the server.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") sendMessage();
+    if (e.key === "Enter") handlesend();
   };
 
   const toggleChat = () => {
