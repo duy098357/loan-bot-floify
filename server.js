@@ -12,11 +12,11 @@ const app = express();
 
 // ✅ Allow specific origins
 const allowedOrigins = [
-  "https://www.lender.com",
-  "https://lender.vercel.app",
-  "https://www.stratolending.com", // replace with your actual Wix domain
+  "https://loan-bot-floify.vercel.app",
+  "https://loan-bot-floify.onrender.com",
+  "https://www.stratolending.com"
+  
 ];
-
 app.use(
   cors({
     origin: function (origin, callback) {
