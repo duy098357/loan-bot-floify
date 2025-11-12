@@ -14,7 +14,7 @@ const app = express();
 const allowedOrigins = [
   "https://www.lender.com",
   "https://lender.vercel.app",
-  "https://www.stratolending.com/", // replace with your actual Wix domain
+  "https://www.stratolending.com", // replace with your actual Wix domain
 ];
 
 app.use(
